@@ -76,15 +76,15 @@ class UI:
     
     def display_analytics(self, y_train, y_test, y_predict, data):
         biased_dataframe, unbiased_dataframe = data[0], data[2]
-        train, algogen, pregen = st.tabs(["Pre-Generated Biased Hiring Data", 
-                                          'Algorithm Generated Hiring on Unbiased Data',
-                                          "Pre-Generated Unbiased Hiring Data"])
+        train, pregen, algogen = st.tabs(["Generated Biased Hiring Data",
+                                          "Generated Unbiased Hiring Data",
+                                          "Algorithm's Hiring Decisions Given The Unbiased Data"])
         with train:
-            self.__bar_graph(y_train, biased_dataframe, "Pre-Generated Biased Hiring Data")
-        with algogen:
-            self.__bar_graph(y_predict, unbiased_dataframe, 'Algorithm Generated Hiring On Unbiased Data')
+            self.__bar_graph(y_train, biased_dataframe, "Generated Biased Hiring Data")
         with pregen:
-            self.__bar_graph(y_test, unbiased_dataframe, 'Pre-Generated Unbiased Hiring Data')
+            self.__bar_graph(y_test, unbiased_dataframe, 'Generated Unbiased Hiring Data')
+        with algogen:
+            self.__bar_graph(y_predict, unbiased_dataframe, "Algorithm's Hiring Decisions Given The Unbiased Data")
 
 if __name__ == "__main__":
     ui = UI()

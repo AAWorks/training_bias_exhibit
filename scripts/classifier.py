@@ -1,6 +1,7 @@
 from sklearn import tree
 import pandas as pd
 import streamlit as st
+import time
 
 class AlgoUtils:
     """set up and run decision tree algorithm"""
@@ -23,10 +24,14 @@ class AlgoUtils:
         return accepted
 
     def train(X_train, X_test, y_train, y_test):
-        with st.spinner('Training classifier...'):
-            classifier = tree.DecisionTreeClassifier(max_depth=5)
-            classifier = classifier.fit(X_train, y_train)
-        return (classifier, X_test, y_test, y_train)
+        clf = tree.DecisionTreeClassifier(max_depth=5)
+        classifier = clf.fit(X_train, y_train)
+        my_bar = st.progress(0, text="Training Classifier...")
+        for percent_complete in range(100):
+            time.sleep(0.03)
+            my_bar.progress(percent_complete / 100, text="Training Classifier...")
+        my_bar.progress(1.0, text="Classifier Trained :white_check_mark:")
+        return (classifier, X_test, y_test, y_train), clf
 
     def test(classifier, X_test, y_test, y_train):
         with st.spinner('Testing classifier...'):

@@ -32,7 +32,7 @@ class TestSet:
 
     def biased_dataset(self):
         biased_data = self.biased_data
-        progress_text = "Generating biased dataset..."
+        progress_text = "Generating Biased Dataset..."
         my_bar = st.progress(0, text=progress_text)
         unit = self.total_applicants // 100
 
@@ -49,7 +49,7 @@ class TestSet:
 
     def unbiased_dataset(self):
         unbiased_data = self.unbiased_data
-        progress_text = "Generating unbiased dataset..."
+        progress_text = "Generating Unbiased Dataset..."
         my_bar = st.progress(0, text=progress_text)
         unit = self.total_applicants // 100
 

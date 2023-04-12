@@ -1,1 +1,2 @@
-# training_bias_exhibit
+# Demonstrating Algorithmic Training Bias
+Exhibiting Training Bias through Simple Automated Hiring

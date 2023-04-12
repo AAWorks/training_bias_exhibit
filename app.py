@@ -3,7 +3,6 @@ import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 from sklearn import tree
-import graphviz
 
 from scripts.generator import TestSet
 from scripts.classifier import AlgoUtils
@@ -11,8 +10,8 @@ from scripts.classifier import AlgoUtils
 class UI:
     bias: str
     def __init__(self):
-        st.set_page_config(layout="wide", page_title="Automated Hiring Simulator", page_icon=":man_in_tuxedo:")
-        st.title("Exhibiting Training Bias in Simple Automated Hiring")
+        st.set_page_config(layout="wide", page_title="Automated Hiring Simulator", page_icon=":teacher:")
+        st.title("Exhibiting Training Bias through Simple Automated Hiring")
         self.bias = "Male"
     
     def __generator_inputs(self):
@@ -51,13 +50,13 @@ class UI:
         test_vars, clf = AlgoUtils.train(bias_data[0], no_bias_data[0], bias_data[1], no_bias_data[1])
         return AlgoUtils.test(*test_vars), clf
     
-    def __show_classifier(self, clf):
-        dot_data = tree.export_graphviz(clf, out_file=None, 
-                                filled=True)
+    def __show_classifier(self, clf, X, y):
+        fig = plt.figure(figsize=(25,20))
+        with st.spinner("Detailing Classifier... (this can take a minute)"):
+            tree.plot_tree(clf, filled=True)
+            st.pyplot(fig)
+            st.caption("Decision Tree Classifier")
 
-        graph = graphviz.Source(dot_data, format="png") #work in progress
-        st.image(graph, caption="Decision Tree Classifier")
-    
     def __bar_graph(self, accepted_rejected_data, df, graph_type):
         df['Accepted_Rejected'] = accepted_rejected_data
         accepted_men, rejected_men, accepted_women, rejected_women = (0,0,0,0)
@@ -86,7 +85,7 @@ class UI:
         _, col, _ = st.columns([1,3,1])
         col.pyplot(fig, use_container_width = False)
     
-    def display_analytics(self, y_train, y_test, y_predict, data, clf):
+    def display_analytics(self, y_train, y_test, y_predict, X, data, clf):
         biased_dataframe, unbiased_dataframe = data[0], data[2]
         train, pregen, algogen, algo = st.tabs(["Generated Biased Hiring Data",
                                           "Generated Unbiased Hiring Data",
@@ -113,12 +112,12 @@ class UI:
                        biased dataset, the algorithm picked up on the skew present and when given unbiased data \
                        (as shown above), showed a significant skew towards the {self.bias} gender.')
         with algo:
-            self.__show_classifier(clf)
+            self.__show_classifier(clf, X, y_train)
 
 if __name__ == "__main__":
     ui = UI()
     data = ui.run_generator()
     if data:
         clf_vars, clf = ui.run_classifier(data)
-        y_predict, X_test, y_test, y_train = clf_vars
-        ui.display_analytics(y_train, y_test, y_predict, data, clf)
+        y_predict, X_test, y_test, y_train, x_train = clf_vars
+        ui.display_analytics(y_train, y_test, y_predict, x_train, data, clf)

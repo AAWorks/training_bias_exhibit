@@ -31,9 +31,9 @@ class AlgoUtils:
             time.sleep(0.03)
             my_bar.progress(percent_complete / 100, text="Training Classifier...")
         my_bar.progress(1.0, text="Classifier Trained :white_check_mark:")
-        return (classifier, X_test, y_test, y_train), clf
+        return (classifier, X_test, y_test, y_train, X_train), clf
 
-    def test(classifier, X_test, y_test, y_train):
+    def test(classifier, X_test, y_test, y_train, X_train):
         with st.spinner('Testing classifier...'):
             y_predict = classifier.predict(X_test)
-        return y_predict, X_test, y_test, y_train
+        return y_predict, X_test, y_test, y_train, X_train

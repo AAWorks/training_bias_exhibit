@@ -83,7 +83,7 @@ class UI:
         plt.xticks(ind + width / 2, ('Accepted', 'Rejected'))
         plt.legend(loc='best')
         _, col, _ = st.columns([1,3,1])
-        col.pyplot(fig, use_container_width = False)
+        col.pyplot(fig, use_container_width = True)
     
     def display_analytics(self, y_train, y_test, y_predict, X, data, clf):
         biased_dataframe, unbiased_dataframe = data[0], data[2]
